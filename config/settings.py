@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,8 +69,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '521977725085-mttup4e14cfnbr005kic4kf980ne16e4.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.getenv('CLIENT_ID'),
+            'secret': os.getenv('SECRET_ID'),
             'key': ''
         }
     }
