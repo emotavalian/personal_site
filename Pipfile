@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.2.2"
+mysqlclient = "*"
+django-allauth = {extras = ["allauth.socialaccount.providers.google"], version = "*"}
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

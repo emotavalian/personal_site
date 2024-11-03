@@ -1,0 +1,45 @@
+{% extends '_base.html' %}
+{% load socialaccount %}
+
+{% load crispy_forms_tags %}
+{% block title %}login{% endblock %}
+{% block content %}
+
+
+
+<h1>login form</h1>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="log in">
+
+</form>
+<!-- Social Login Buttons -->
+<div class="social-logins">
+    <h3>Or login with</h3>
+     {% comment %} <a href="{% provider_login_url 'google' %}">
+        <button type="button">Login with Google</button>
+    </a>  {% endcomment %}
+    <a onclick="submit_google()" style="text-decoration: none;">
+    <button type="button" style="background-color: #4285F4; color: white; padding: 10px 20px; border: none; border-radius: 4px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+             alt="Google Logo" width="20" style="vertical-align: middle; margin-right: 8px;">
+        Login with Google
+    </button>
+    </a>
+</div>
+
+<form action="/accounts/google/login/" method="POST" id="google_form">
+    {% csrf_token %}
+
+</form>
+
+<script>
+    function submit_google(){
+        document.getElementById("google_form").submit();
+    }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,8 @@
+.env
+venv/
+cart/test_farsi.py
+cart/test_farsi.html
+db.sqlite3
+.idea/
+__pycache__/
+static_files/
