@@ -9,6 +9,8 @@ mysqlclient = "*"
 django-allauth = {extras = ["allauth.socialaccount.providers.google"], version = "*"}
 django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
+faker = "*"
+factory-boy = "*"
 
 [dev-packages]
 
