@@ -1,37 +1,24 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.utils.translation import gettext_lazy as _
-
-from core.models import CustomUser
+from .models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-   list_display = ("username", "email","card_id_number")
-   # for adding id_card_number to change form admin
-   fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "email","card_id_number")}),
-        (
-            _("Permissions"),
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                ),
-            },
-        ),
-        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+    list_display = ('id','phone_number', 'email',  'first_name', 'last_name')
+    ordering = ('phone_number',)
+    
+    fieldsets = (
+        (None, {'fields': ('phone_number', 'password')}),
+        ('Personal info', {'fields': ('email',  'first_name', 'last_name')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
     )
-   # # for adding id_card_number to add form admin
-   add_fieldsets = (
-        (
-            None,
-            {
-                "classes": ("wide",),
-                "fields": ("username", "password1","password2", "email","first_name","last_name","card_id_number"),
-            },
-        ),
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('phone_number', 'email',  'first_name','last_name','password1', 'password2'),
+        }),
     )
+
+    search_fields = ('phone_number', 'email')  
+    ordering = ("email",)

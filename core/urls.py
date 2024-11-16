@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.home_page_view, name='home'),
     path('about_us', views.about_page_view, name='about'),
     path('contact_us', views.contact_page_view, name='contact'),
-
+    path('login/', views.CustomLoginView.as_view(), name='account_login'),
 ]

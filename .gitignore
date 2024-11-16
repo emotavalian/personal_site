@@ -6,3 +6,6 @@ db.sqlite3
 .idea/
 __pycache__/
 static_files/
+image/
+my_test.py
+read_me/

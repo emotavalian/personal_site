@@ -124,9 +124,11 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
+    'core.backends.PhoneNumberBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -185,17 +187,25 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # custom user
 AUTH_USER_MODEL = 'core.CustomUser'
 
+
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
-
+ 
 # all_auth configuration
 # ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=3
 # CCOUNT_EMAIL_REQUIRED = True
-
+ACCOUNT_FORMS = {
+    'signup': 'core.forms.CustomSignupForm',
+    'login': 'core.forms.CustomLoginForm',
+}
+ACCOUNT_ADAPTER = "core.adapters.CustomAccountAdapter"
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"
+
+ 
