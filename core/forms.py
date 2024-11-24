@@ -1,27 +1,58 @@
 from django import forms
 from allauth.account.forms import SignupForm, LoginForm
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from allauth.account.adapter import get_adapter
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-
+from phonenumber_field.formfields import PhoneNumberField
+from django.utils.html import format_html
 from .models import CustomUser
 
+
+
+
+class CustomUserForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'password-input', 'autocomplete': 'new_password'}),
+        label="Password",
+        help_text="Enter a strong password.",
+    )
+    class Meta:
+        model = CustomUser
+        fields = ('country_code','phone_number',  'first_name', 'last_name', 'email')
+       
+        def save(self, commit=True): # Create the user instance but don't save it yet.
+            user = super().save(commit=False) #creates a CustomUser instance but does not save it to the database yet.
+            user.set_password(self.cleaned_data["password"]) #Sets the hashed password for the user using the validated password1 field from the form.
+            if commit:
+                user.save()
+            return user  # Display hashed password
+
+
+
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ( 'country_code','phone_number','password','first_name', 'last_name', 'email')
+
 class CustomSignupForm(SignupForm):
-    card_id_number = forms.CharField(max_length=10,required=False,)
-    phone_number = forms.CharField(max_length=11, required=True)
+    
+    phone_number = PhoneNumberField(region="IR")
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
 
-    field_order = ['phone_number', 'email', 'card_id_number', 'first_name', 'last_name', 'password1']
+    field_order = ['phone_number', 'email',  'first_name', 'last_name', 'password1']
+    
 
-    def clean_phone_number(self):
-        phone = self.cleaned_data.get('phone_number')
-        #check if phone number is already registered
-        if len(phone) != 11 or not phone.isdigit() or phone[0] != '0':
-            raise forms.ValidationError("please enter a valid phone number")
-        if CustomUser.objects.filter(phone_number=phone).exists():
-            raise forms.ValidationError("This phone number is already registered")
-        return phone
+    
+    # def clean_phone_number(self):
+    #     phone = self.cleaned_data.get('phone_number')
+    #     #check if phone number is already registered
+    #     # if len(phone) != 11 or not phone.isdigit() or phone[0] != '0':
+    #     #     raise forms.ValidationError("please enter a valid phone number")
+    #     if CustomUser.objects.filter(phone_number=phone).exists():
+    #         raise forms.ValidationError("This phone number is already registered")
+    #     return phone
 
     def clean_first_name(self):
         first_name=self.cleaned_data.get('first_name')
@@ -70,7 +101,42 @@ class CustomLoginForm(LoginForm):
         auth_login(request, user)
         return user
 
+#-------- making add form and change form by inheritanting of UserCreationForm and UserChangeForm
 
+# class CustomUserCreationForm(UserCreationForm):
+#     class Meta:
+#         model = CustomUser
+#         fields = ( 'country_code','phone_number', 'first_name', 'last_name', 'email',)
 
+    
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['country_code'].widget.attrs.update({
+#             'class': 'select2',
+#             'style': 'color : blue;',
+#         })
+
+#     Customizes how the user instance is saved to the database. It ensures that passwords are securely hashed before saving
+#     def save(self, commit=True): # Create the user instance but don't save it yet.
+#         user = super().save(commit=False) #creates a CustomUser instance but does not save it to the database yet.
+#         user.set_password(self.cleaned_data["password1"]) #Sets the hashed password for the user using the validated password1 field from the form.
+#         if commit:
+#             user.save()
+#         return user
+
+        
+#     # if 'password' in self.fields:
+#     #     self.fields['password'].widget.attrs.update({'class': 'password-input'})
+#     # if self.instance and self.instance.pk:
+#     #     self.fields['password'].widget = forms.TextInput(attrs={'readonly': 'readonly'})
+#     #     self.fields['password'].initial = format_html('<strong>{}</strong>', self.instance.password)  # Display hashed password
+
+# class CustomUserChangeForm(UserChangeForm ):
+#     class Meta:
+#         model = CustomUser
+#         fields = '__all__'
+#         widgets = {
+#             'password': forms.PasswordInput(attrs={'class': 'password-change-input'}),
+#          }
 
 

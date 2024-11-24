@@ -1,0 +1,11 @@
+
+
+.password-input {
+    width: 100%;
+     }
+
+.password-input + span  {
+    font-size: 12px;
+    color: #555;
+}
+ 

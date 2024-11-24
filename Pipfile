@@ -11,6 +11,8 @@ django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 faker = "*"
 factory-boy = "*"
+django-phonenumber-field = "==8.0.0"
+phonenumbers = "*"
 
 [dev-packages]
 

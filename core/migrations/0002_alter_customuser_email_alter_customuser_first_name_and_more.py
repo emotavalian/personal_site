@@ -30,6 +30,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='customuser',
             name='phone_number',
-            field=models.CharField(max_length=11, unique=True, validators=[core.models.phone_number_validator]),
+            field=models.CharField(max_length=11, unique=True),
         ),
     ]
